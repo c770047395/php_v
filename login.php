@@ -1,4 +1,5 @@
 <?php
+session_start();
 if($_SERVER["REQUEST_METHOD"]=="POST"){
     require_once "util/db.php";
     $name = $_POST["name"];
@@ -12,9 +13,8 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
         $stmt->fetch();
     }
     if($pwd == $password){
-        $redis->hSet($_COOKIE["sessionId"],"uid",$id);
-        $redis->hSet($_COOKIE["sessionId"],"username",$username);
-        $redis->expire($sessionId,60*30);
+        $_SESSION['uid']=$id;
+        $_SESSION['name']=$username;
         if(isset($_GET['next'])){
             header('Location:'.$_GET['next']);
         }else{

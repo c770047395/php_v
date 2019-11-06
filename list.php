@@ -1,16 +1,7 @@
 <?php
+session_start();
 require_once "util/db.php";
-$sessionId = "";
-if(!isset($_COOKIE['sessionId'])){
-    $sessionId = session_create_id();
-    setcookie("sessionId",$sessionId,time()+60*30);
-}else{
-    $sessionId = $_COOKIE['sessionId'];
-    setcookie("sessionId",$sessionId,time()+60*30);
-}
-
-if($redis->hGet($sessionId,"uid")){
-    $redis->expire($sessionId,60*30);
+if(isset($_SESSION['uid'])){
     ?>
     <html lang="en">
     <head>
@@ -18,7 +9,7 @@ if($redis->hGet($sessionId,"uid")){
         <title>商品列表</title>
     </head>
     <body>
-    <h1>欢迎您,<?php echo $redis->hget($sessionId,"username");?></h1><a href="logout.php">退出登陆</a>
+    <h1>欢迎您,<?php echo $_SESSION['name'];?></h1><a href="logout.php">退出登陆</a>
         <table>
             <thead>
             <tr>
